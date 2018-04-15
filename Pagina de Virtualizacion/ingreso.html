@@ -101,26 +101,30 @@
                             $("#form").on("submit", function(e){
                                
                                 var fileSelect = $("#csvFile");
+                                console.log(fileSelect);
                                 var files = fileSelect[0].files;
+                                console.log(files);
                                 // Create a new FormData object.
                                 var formData = new FormData();
                                 
                                 debugger;
                                  formData.append(/*'file'*/files[0].name, files[0], files[0].name);
-
+                                 console.log(formData);
                                  $.ajax({  
-                                     url:"http://localhost:5000/result",  
+                                     url:"http://52.160.66.113:5000/result",
                                      method:"POST",  
                                      data: formData,  
                                      contentType:false,          // The content type used when sending data to the server.  
                                      cache:false,                // To unable request pages to be cached  
                                      processData:false,          // To send DOMDocument or non processed data file it is set to false  
-                                     success: function(data){  
+                                     success: function(data){
+                                         console.log(data);
                                          debugger;
                                      },
-                                    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                        console.log(data + " " + textStatus + " " + errorThrown);
                                         debugger;
-                                    }  
+                                    }
                                 })  
                             });
 
