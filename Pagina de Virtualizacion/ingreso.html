@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
       <meta charset="utf-8" />
@@ -49,7 +49,7 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
 					<li>
-                        <a href="chart.html" class="active-menu"><i class="fa fa-edit"></i>Ingreso datos</a>
+                        <a href="ingreso.html" class="active-menu"><i class="fa fa-edit"></i>Ingreso datos</a>
                     </li>
                     <li>
                         <a href="index.html"><i class="fa fa-bar-chart-o"></i>Datos</a>
@@ -75,14 +75,14 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cargar Archivo</div>
                     <div class="panel-body">
-                        <div class="panel-heading">Por favor, cargo el archivo “csv” con la información de las medallas para poder cargar los resultados en la pagina de Datos.</div>
+                        <div class="panel-heading">Por favor, carga el archivo “csv” con la información de las medallas para poder cargar los resultados en la pagina de Datos.</div>
                         <!--Botón de carga de archivo-->
 
-                        <form id="form"  method="post" enctype="multipart/form-data">
+                        <form id="form" method="post" enctype="multipart/form-data">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Carga de archivo</label>
-                                    <input id = "csvFile" type="file" accept=".csv" />
+                                    <input id="csvFile" name="csvFile" type="file" accept=".csv" />
                                 </div>
                                 <br>
                                 <!--Botones de subir información y eliminar-->
@@ -95,23 +95,25 @@
                                 </div>
                              </div>
                         </form>
+                        
+                        <div id="resultado"></div>
                            
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+					
                         <script>
-                            $("#form").on("submit", function(e){
-                               
-                                var fileSelect = $("#csvFile");
-                                console.log(fileSelect);
-                                var files = fileSelect[0].files;
-                                console.log(files);
-                                // Create a new FormData object.
-                                var formData = new FormData();
-                                
-                                debugger;
-                                 formData.append(/*'file'*/files[0].name, files[0], files[0].name);
-                                 console.log(formData);
-                                 $.ajax({  
-                                     url:"http://52.160.66.113:5000/result",
+  
+							  $("#form").on("submit", function(e){
+                                  
+                                e.preventDefault(); // no se vuelve a recargar
+                                  
+                                var form = $('form')[0]; // You need to use standard javascript object here
+                                  console.log($('form'));
+                                  console.log(form);
+                                  
+                                var formData = new FormData(form);  
+                                console.log(formData);
+                                $.ajax({  
+                                     url:"http://localhost:5000/result",
                                      method:"POST",  
                                      data: formData,  
                                      contentType:false,          // The content type used when sending data to the server.  
@@ -119,16 +121,18 @@
                                      processData:false,          // To send DOMDocument or non processed data file it is set to false  
                                      success: function(data){
                                          console.log(data);
-                                         debugger;
                                      },
-                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                        console.log(data + " " + textStatus + " " + errorThrown);
-                                        debugger;
+                                    error: function(data,XMLHttpRequest, textStatus, errorThrown) {
+                                        console.log("Ocurrió un error al hacer la solicitud");
+                                    },
+                                    success: function(e){
+                                        $("#form").val = "OK";
+                                        console.log("Archivo mandado exitosamente!");
                                     }
                                 })  
                             });
-
-                        </script>
+						
+							</script>
 
                     </div>
                 </div>
